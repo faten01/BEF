@@ -21,5 +21,6 @@ class Stand extends Model
         'longeur',
         'largeur',
         'etat',
+        'prix'
     ];
 }

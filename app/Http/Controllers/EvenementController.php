@@ -17,9 +17,46 @@ class EvenementController extends Controller
     public function store(Request $request)
     {
 
-        $evenement = Evenement::create($request->all());
+        
+        try {
+            // Validate the request data
+            $request->validate([
+                //'exposant_id' => 'required|exists:users,id',
+               // 'description' => 'nullable|string|max:255',
+                'nom' => 'required|string|max:255',
+                'ville' => 'required|string|max:255',
+                'affiche' => 'required|string|max:255',
+                'date' => 'required|string|max:255',
+                'dateFin' => 'required|string|max:255',
+                
 
-        return response()->json($evenement, 201);    }
+                // ... other validation rules
+            ]);
+    
+            // Retrieve the corresponding user
+
+            // Create a new stand instance
+            $event = new Evenement([
+                //'exposant_id' => $exposant_id,
+                //'description' => $request->input('description'),
+                'nom' => $request->input('nom'),
+                'affiche' => $request->input('affiche'),
+                'ville' => $request->input('ville'),
+                'date' => $request->input('date'),
+                'dateFin' => $request->input('dateFin'),
+                // ... other fields
+            ]);
+    
+            // Save the stand to the database
+            $event->save();
+    
+            // Return a response
+            return response()->json($event);
+    
+        } catch (\Exception $e) {
+            // Log or handle the exception
+            return response()->json(['error' => $e->getMessage()], 500);
+        }   }
 
 
     public function show(Evenement $evenement,string $identifier)
@@ -64,6 +101,10 @@ class EvenementController extends Controller
 
         if ($request->has('date')) {
             $evenement->date = $request->input('date');
+    
+        }
+        if ($request->has('dateFin')) {
+            $evenement->dateFin = $request->input('dateFin');
     
         }
 

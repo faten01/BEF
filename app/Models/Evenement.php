@@ -19,6 +19,7 @@ class Evenement extends Model
         'affiche',
         'ville',
         'date',
+        'dateFin'
         
     
     ];

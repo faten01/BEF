@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\EvenementController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\ReservationController;
@@ -29,6 +30,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logins', [AuthController::class, 'logins']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
     //Route::post('/register', [AuthController::class, 'register']);
@@ -86,5 +89,10 @@ Route::put('/chats/{identifier}', [ChatController::class,'update']);
 Route::delete('/chats/{identifier}', [ChatController::class,'destroy']);
 
 
+Route::post('/evenements',[EvenementController::class,'store']);
+Route::get('/evenements/{identifier}',[EvenementController::class,'show']);
+Route::get('/evenements',[EvenementController::class,'index']);
+Route::put('/evenements/{identifier}', [EvenementController::class,'update']);
+Route::delete('/evenements/{identifier}', [EvenementController::class,'destroy']);
 
 

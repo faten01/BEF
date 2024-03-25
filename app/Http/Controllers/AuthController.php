@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -36,6 +38,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+       
         $user = User::where('email', $request->email)->first();
     
         if (!$user) {
@@ -66,6 +69,41 @@ class AuthController extends Controller
     
             return response()->json(['message' => 'You have logged out successfully!']);
         }    
+
+
+
+
+        public function login1(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'MotDePasse' => 'required',
+        ]);
+
+        if (!Auth::attempt(['email' => $request->email, 'MotDePasse' => $request->MotDePasse])) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+
+        $user = $request->user();
+        $token = $user->createToken('api_token')->plainTextToken;
+
+        return response()->json(['token' => $token, 'message' => 'You have successfully logged in!']);
+    }
+
+
+    public function logins()
+    {
+        validator(request()->all(), 
+        [
+            'email'=>['required','email'],
+            'MotDePasse'=>['required']
+
+        ])->validate();
+
+    }
+
     
 
 }

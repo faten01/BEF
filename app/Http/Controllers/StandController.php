@@ -22,13 +22,15 @@ class StandController extends Controller
         try {
             // Validate the request data
             $request->validate([
-                'exposant_id' => 'required|exists:users,id',
-                'description' => 'nullable|string|max:255',
+                //'exposant_id' => 'required|exists:users,id',
+               // 'description' => 'nullable|string|max:255',
                 'numero' => 'required|string|max:255',
                 'superficie' => 'required|numeric',
                 'longeur' => 'required|numeric',
                 'largeur' => 'required|numeric',
                 'etat' => 'required|in:disponible,reservee,non disponible',
+                'prix' => 'required|numeric',
+
                 // ... other validation rules
             ]);
     
@@ -37,13 +39,14 @@ class StandController extends Controller
 
             // Create a new stand instance
             $stand = new Stand([
-                'exposant_id' => $exposant_id,
-                'description' => $request->input('description'),
+                //'exposant_id' => $exposant_id,
+                //'description' => $request->input('description'),
                 'numero' => $request->input('numero'),
                 'superficie' => $request->input('superficie'),
                 'longeur' => $request->input('longeur'),
                 'largeur' => $request->input('largeur'),
                 'etat' => $request->input('etat'),
+                'prix' => $request->input('prix'),
                 // ... other fields
             ]);
     
@@ -102,6 +105,10 @@ class StandController extends Controller
     
         if ($request->has('etat')) {
             $stand->etat = $request->input('etat');
+        }
+
+        if ($request->has('prix')) {
+            $stand->prix = $request->input('prix');
         }
     
         // Update other attributes similarly
